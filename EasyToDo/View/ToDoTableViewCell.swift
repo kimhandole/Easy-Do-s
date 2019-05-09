@@ -9,7 +9,9 @@
 import UIKit
 
 class ToDoTableViewCell: UITableViewCell {
-
+    @IBOutlet weak var todoTextField: UITextField!
+    @IBOutlet weak var checkedButton: UIButton!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
