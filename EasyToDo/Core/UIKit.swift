@@ -23,6 +23,12 @@ extension UIViewController {
 
 // MARK: UIView
 extension UIView {
+    
+    func nearestAncestor<T>(ofType type: T.Type) -> T? {
+        if let me = self as? T { return me }
+        return superview?.nearestAncestor(ofType: type)
+    }
+    
     @IBInspectable var cornerRadius: CGFloat {
         get {
             return layer.cornerRadius
@@ -49,5 +55,66 @@ extension UIView {
         set {
             layer.borderColor = newValue?.cgColor
         }
+    }
+}
+
+extension UIResponder {
+    
+    func next<T: UIResponder>(_ type: T.Type) -> T? {
+        return next as? T ?? next?.next(type)
+    }
+}
+
+extension UITableViewCell {
+    
+    var tableView: UITableView? {
+        return next(UITableView.self)
+    }
+    
+    var indexPath: IndexPath? {
+        return tableView?.indexPath(for: self)
+    }
+    
+    func shake() {
+        
+        let shake = CABasicAnimation(keyPath: "position")
+        shake.duration = 0.06
+        shake.repeatCount = 2
+        shake.autoreverses = true
+        //        shake.beginTime = CACurrentMediaTime() + 0.7
+        
+        let fromPoint = CGPoint(x: center.x - 4, y: center.y)
+        let fromValue = NSValue(cgPoint: fromPoint)
+        
+        let toPoint = CGPoint(x: center.x + 4, y: center.y)
+        let toValue = NSValue(cgPoint: toPoint)
+        
+        shake.fromValue = fromValue
+        shake.toValue = toValue
+        
+        layer.add(shake, forKey: "position")
+    }
+}
+
+extension UITextField {
+    
+    func shake() {
+        
+        let shake = CABasicAnimation(keyPath: "position")
+        shake.duration = 0.06
+        shake.repeatCount = 2
+        shake.autoreverses = true
+        //        shake.beginTime = CACurrentMediaTime() + 0.7
+        
+        let fromPoint = CGPoint(x: center.x - 4, y: center.y)
+        let fromValue = NSValue(cgPoint: fromPoint)
+        
+        let toPoint = CGPoint(x: center.x + 4, y: center.y)
+        let toValue = NSValue(cgPoint: toPoint)
+        
+        shake.fromValue = fromValue
+        shake.toValue = toValue
+        
+        layer.add(shake, forKey: "position")
     }
 }
